@@ -43,7 +43,6 @@ pipeline {
                 docker {
                     image 'docker pull mcr.microsoft.com/playwright:v1.30.0-jammy'
                     reuseNode true
-                    #args '-u root:root'
                 }
             }
             steps {
