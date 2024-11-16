@@ -25,6 +25,7 @@ pipeline {
                 sh '''
                     test -f build/index.html
                     ls -la
+                    npm install
                     npm test
             '''
             }
