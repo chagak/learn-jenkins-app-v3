@@ -38,6 +38,22 @@ pipeline {
             '''
             }
         }
+        stage('E2E') {
+            agent {
+                docker {
+                    image 'docker pull mcr.microsoft.com/playwright:v1.30.0-jammy'
+                    reuseNode true
+                    #args '-u root:root'
+                }
+            }
+            steps {
+                sh '''
+                    npm install server
+                    node_modules/server -s build
+                    npx playwright test
+            '''
+            }
+        }
     }
     post {
         always {
