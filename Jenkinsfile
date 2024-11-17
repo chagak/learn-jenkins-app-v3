@@ -39,7 +39,13 @@ pipeline {
                             npm test
                     '''
                     }
-                }
+                    post {
+                        always {
+                            junit 'jest-results/*.xml'                          
+                        }
+                    }
+                    }
+                
                 stage('E2E') { 
                     agent {
                         docker {
@@ -55,15 +61,20 @@ pipeline {
                             npx playwright test
                     '''
                     }
+                    post {
+                        always {
+                            junit 'jest-results/*.xml'
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                        }
+                    }
+                }
                 }
             }
+            }
         }
-
-    }
     post {
         always {
             junit 'jest-results/*.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
-}
