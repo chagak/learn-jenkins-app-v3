@@ -100,14 +100,6 @@ pipeline {
             }
             }
         }
-        stage('Approval') {
-            steps {
-                timeout(time: 1, unit: 'MINUTES') {
-                    input message: 'Ready to Deploy to production', ok: 'Yes, I am sure'
-                }
-
-            }
-        }
         stage('Staging E2E') {
             agent {
                 docker {
@@ -128,6 +120,14 @@ pipeline {
                 always {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Staging E2E', reportTitles: '', useWrapperFileDirectly: true])
                 }
+            }
+        }
+        stage('Approval') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: 'Ready to Deploy to production', ok: 'Yes, I am sure'
+                }
+
             }
         }
 
