@@ -73,10 +73,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            junit 'jest-results/*.xml'
-            
-        }
-    }
 }
