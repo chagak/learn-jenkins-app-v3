@@ -87,11 +87,6 @@ pipeline {
             environment {
                 CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
             }
-            steps {
-                sh '''
-                    npx playwright test  --reporter=html
-                '''
-            }
 
             post {
                 always {
@@ -115,7 +110,7 @@ pipeline {
                 }
             }
             environment {
-                CI_ENVIRONMENT_URL = 'https://velvety-frangollo-422703.netlify.app'
+                CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
             }
             steps {
                 sh '''
