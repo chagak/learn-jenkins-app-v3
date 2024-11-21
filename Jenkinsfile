@@ -20,6 +20,8 @@ pipeline {
                     sh '''
                         aws --version
                         aws s3 ls
+                        echo "hello s3" > index.html
+                        aws s3 cp test.txt s3://mybucket/test.txt
                     '''
 }
 
