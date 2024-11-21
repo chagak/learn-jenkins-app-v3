@@ -8,21 +8,9 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
-            agent {
-                docker {
-                    image 'amazon/aws-cli:latest'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    aws --version
-                '''
-            }
-        }
+        
 
-        /*stage('Build') {
+        stage('Build') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -41,6 +29,7 @@ pipeline {
             }
         }
         
+
         stage('Tests') {
             parallel {
                 stage('Unit tests') {
@@ -171,6 +160,6 @@ pipeline {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Prod E2E', reportTitles: '', useWrapperFileDirectly: true])
                 }
             }
-        } */
+        }
     }
 }
