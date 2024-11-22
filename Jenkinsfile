@@ -25,6 +25,7 @@ pipeline {
                         aws s3 ls
                         echo "hello s3" > test.txt
                         aws s3 cp test.txt s3://$AWS_S3_BUCKET/test.txt
+                        aws s3 sync honey s3://$AWS_S3_BUCKET
                     '''
 }
 
