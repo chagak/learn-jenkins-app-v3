@@ -21,21 +21,23 @@ pipeline {
                 AWS_SUBNET_1A_ID = "subnet-01555aabb9afb6a6b"
                 AWS_SUBNET_1B_ID = "subnet-026a57fbff4808377"
                 ECS_SECURITY_GROUP_ID = "sg-026007160ce766055"
+                AWS_ECS_CLUSTER = "LearnJenkinsApp-Cluster"
+                AWS_ECS_SERVICE_NAME = "LearnJenkinsApp-Service"
+                AWS_TASK_DEFINITION_NAME = "LearnJenkinsApp-TaskDefinition-Prod"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
-                        yum install jq -y  //to pass varaible between aws cli commands
                         aws s3 ls
                         echo "hello s3" > test.txt
                         aws s3 cp test.txt s3://$AWS_S3_BUCKET/test.txt
                         aws s3 sync honey s3://$AWS_S3_BUCKET
                         aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json
                         aws ecs create-service \
-                            --cluster LearnJenkinsApp-Cluster \
-                            --service-name LearnJenkinsApp-Service \
-                            --task-definition LearnJenkinsApp-TaskDefinition-Prod \
+                            --cluster $AWS_ECS_CLUSTER \
+                            --service-name $AWS_ECS_SERVICE_NAME \
+                            --task-definition $AWS_TASK_DEFINITION_NAME \
                             --desired-count 1 \
                             --launch-type FARGATE \
                             --platform-version LATEST \
