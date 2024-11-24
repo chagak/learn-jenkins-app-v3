@@ -8,18 +8,11 @@ pipeline {
     // }
 
     stages {
-        stage('Build Docker Image') {
-            steps {
-                echo 'Hello World'
-                sh 'docker build -t myjenkinsapp .'
-            }
-        }
-
         stage('AWS') {
             agent {
                 docker {
                     image 'amazon/aws-cli:latest'
-                    args "--entrypoint=''" // "-u root" can be added to be a root
+                    args "--entrypoint=''"
                 }
             }
             environment {

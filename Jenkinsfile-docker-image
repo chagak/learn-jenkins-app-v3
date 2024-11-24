@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                echo 'Hello World'
+                sh 'docker build -f  ci\Dockerfile -t image-tag .'
+            }
+        }
+    }
+}
+
