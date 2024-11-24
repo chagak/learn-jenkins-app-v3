@@ -19,8 +19,8 @@ pipeline {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
                 AWS_DEFAULT_REGION = "us-east-1"
                 AWS_VPC_ID =
-                AWS_SUBNET_1_ID = "subnet-01555aabb9afb6a6b"
-                AWS_SUBNET_2_ID = "subnet-026a57fbff4808377"
+                AWS_SUBNET_1A_ID = "subnet-01555aabb9afb6a6b"
+                AWS_SUBNET_1B_ID = "subnet-026a57fbff4808377"
                 ECS_SECURITY_GROUP_ID = "sg-026007160ce766055"
             }
             steps {
@@ -39,7 +39,7 @@ pipeline {
                             --desired-count 1 \
                             --launch-type FARGATE \
                             --platform-version LATEST \
-                            --network-configuration "awsvpcConfiguration={subnets=[\"$AWS_SUBNET_1_ID",\"$AWS_SUBNET_2_ID"],securityGroups=[\"$ECS_SECURITY_GROUP_ID"],assignPublicIp=\"ENABLED\"}"
+                            --network-configuration "awsvpcConfiguration={subnets=[\"$AWS_SUBNET_1A_ID",\"$AWS_SUBNET_1B_ID"],securityGroups=[\"$ECS_SECURITY_GROUP_ID"],assignPublicIp=\"ENABLED\"}"
                     '''
 }
 
