@@ -26,7 +26,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
-                        sudo yum install jq -y  //to pass varaible between aws cli commands
+                        yum install jq -y  //to pass varaible between aws cli commands
                         aws s3 ls
                         echo "hello s3" > test.txt
                         aws s3 cp test.txt s3://$AWS_S3_BUCKET/test.txt
