@@ -18,7 +18,6 @@ pipeline {
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
                 AWS_DEFAULT_REGION = "us-east-1"
-                AWS_VPC_ID =
                 AWS_SUBNET_1A_ID = "subnet-01555aabb9afb6a6b"
                 AWS_SUBNET_1B_ID = "subnet-026a57fbff4808377"
                 ECS_SECURITY_GROUP_ID = "sg-026007160ce766055"
