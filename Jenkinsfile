@@ -31,7 +31,7 @@ pipeline {
                         aws ecs create-service \
                             --cluster LearnJenkinsApp-Cluster \
                             --service-name LearnJenkinsApp-Service \
-                            --task-definition learnjenkinsapp:1 \
+                            --task-definition LearnJenkinsApp-TaskDefinition-Prod \
                             --desired-count 1 \
                             --launch-type FARGATE \
                             --platform-version LATEST 
