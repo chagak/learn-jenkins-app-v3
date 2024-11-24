@@ -39,7 +39,7 @@ pipeline {
                             --desired-count 1 \
                             --launch-type FARGATE \
                             --platform-version LATEST \
-                            --network-configuration "awsvpcConfiguration={subnets=[\"$AWS_SUBNET_1A_ID",\"$AWS_SUBNET_1B_ID"],securityGroups=[\"$ECS_SECURITY_GROUP_ID"],assignPublicIp=\"ENABLED\"}"
+                            --network-configuration "awsvpcConfiguration={subnets=[\"${AWS_SUBNET_1A_ID}",\"${AWS_SUBNET_1B_ID}"],securityGroups=[\"$ECS_SECURITY_GROUP_ID"],assignPublicIp=\"ENABLED\"}"
                     '''
 }
 
