@@ -17,6 +17,7 @@ pipeline {
             }
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
+                AWS_DEFAULT_REGION= "us-east-1"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
