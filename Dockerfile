@@ -12,8 +12,8 @@ RUN cd /var/www/html
 RUN git clone https://github.com/chagak/honey-static-webapp.git /tmp/honey-static-webapp/*
 RUN cp -r /tmp/honey-static-webapp/* /var/www/html/
 RUN rm -rf honey-static-webapp/
-RUN systemctl enable httpd
-RUN systemctl start httpd
+# RUN systemctl enable httpd
+# RUN systemctl start httpd
 
 # Expose port 80
 EXPOSE 80
