@@ -19,5 +19,5 @@ RUN rm -rf honey-static-webapp/
 EXPOSE 80
 
 # Set the default application that will start when the container start
-ENTRYPOINT ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
 #COPY build /usr/share/nginx/html
