@@ -1,5 +1,6 @@
 # Use an official apache image
-FROM  amazonlinux:latest
+#FROM  amazonlinux:latest
+FROM amazon/aws-cli
 
 # Update and install necessary packages
 RUN yum update -y && \
