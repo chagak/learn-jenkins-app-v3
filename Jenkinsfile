@@ -15,10 +15,10 @@ pipeline {
             }
         }
 
-        stage('AWS') {
+        stage('Deploy to AWS') {
             agent {
                 docker {
-                    image 'amazon/aws-cli:latest'
+                    image 'myjenkinsapp'
                     args "--entrypoint=''" // "-u root" can be added to be a root
                 }
             }
