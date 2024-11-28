@@ -12,6 +12,7 @@ pipeline {
             agent {
                 docker {
                     image 'amazon/aws-cli'
+                    image 'docker/latest'
                     args '-v /var/run/docker.sock:/var/run/docker.sock' // Ensures access to Docker daemon
                     //args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"//
                 }
