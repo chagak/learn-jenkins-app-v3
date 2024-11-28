@@ -9,24 +9,9 @@ pipeline {
 
     stages {
         stage('Build Docker Image') {
-            agent {
-                docker {
-                    image 'amazon/aws-cli'
-                    image 'docker/latest'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock' // Ensures access to Docker daemon
-                    //args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"//
-                }
-            }
             steps {
-
-                // Build Docker Image
+                echo 'Hello World'
                 sh 'docker build -t myjenkinsapp .'
-                withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')])
-                    sh '''
-                        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 871909687521.dkr.ecr.us-east-1.amazonaws.com
-                        docker tag 871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins:latest
-                        docker push 871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins:latest
-                    '''
             }
         }
 
@@ -46,7 +31,6 @@ pipeline {
                 AWS_ECS_CLUSTER = "LearnJenkinsApp-Cluster"
                 AWS_ECS_SERVICE_NAME = "LearnJenkinsApp-Service"
                 AWS_TASK_DEFINITION_NAME = "LearnJenkinsApp-TaskDefinition-Prod"
-                AWS_DOCKER_REGISTRY_ECR = "871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
