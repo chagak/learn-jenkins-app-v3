@@ -11,19 +11,21 @@ pipeline {
         stage('Build Docker Image') {
             agent {
                 docker {
-                    image 'docker:latest'
+                    image 'amazon/aws-cli'
                     args '-v /var/run/docker.sock:/var/run/docker.sock' // Ensures access to Docker daemon
+                    //args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"//
                 }
             }
             steps {
 
                 // Build Docker Image
                 sh 'docker build -t myjenkinsapp .'
-                sh '''
-                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 871909687521.dkr.ecr.us-east-1.amazonaws.com
-                    docker tag 871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins:latest
-                    docker push 871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins:latest
-                '''
+                withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')])
+                    sh '''
+                        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 871909687521.dkr.ecr.us-east-1.amazonaws.com
+                        docker tag 871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins:latest
+                        docker push 871909687521.dkr.ecr.us-east-1.amazonaws.com/ecr_learnjenkins:latest
+                    '''
             }
         }
 
