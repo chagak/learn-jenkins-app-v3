@@ -14,6 +14,15 @@ pipeline {
                 sh 'docker build -t myjenkinsapp .'
             }
         }
+        stage('Verify Docker') {
+            steps {
+                // Check if Docker is installed and running
+                sh '''
+                which docker || { echo "Docker not found!"; exit 1; }
+                docker --version
+                '''
+            }
+        }
         stage('Create ECR') {
             agent {
                 docker {
