@@ -20,7 +20,7 @@ pipeline {
 
             steps {
                 echo 'Building Docker image...'
-                sh 'amazon-linux-extras enable docker' 
+                //sh 'amazon-linux-extras enable docker' 
                 sh 'yum install -y docker'
                 sh 'systemctl start docker'
                 sh 'docker build -t myjenkinsapp .'
