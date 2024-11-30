@@ -31,6 +31,10 @@ pipeline {
                     args "--entrypoint=''" // Overrides entrypoint for full flexibility
                     // args '--privileged -v /var/run/docker.sock:/var/run/docker.sock  --entrypoint'
                 }
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                }
             }
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
