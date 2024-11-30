@@ -1,5 +1,5 @@
-# Use the official Amazon Linux image as the base image
-FROM amazonlinux:latest
+# Use the official Amazon Linux 2 image
+FROM amazonlinux:2
 
 # Install necessary packages including Apache, Git, Docker, and AWS CLI
 RUN yum update -y && \
@@ -9,28 +9,25 @@ RUN yum update -y && \
     curl \
     unzip \
     sudo \
-    docker \
-    aws-cli
+    && yum install -y docker \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && sudo ./aws/install \
+    && rm -rf awscliv2.zip ./aws
 
-# Install Docker (optional, in case the default version is not sufficient)
-RUN curl -fsSL https://get.docker.com | sh
+# Enable Docker service (optional, if needed to run Docker within the container)
+RUN sudo systemctl enable docker
 
-# Install AWS CLI v2 (this is to ensure you have the latest version of AWS CLI)
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    sudo ./aws/install && \
-    rm -rf awscliv2.zip
-
-# Set working directory
-WORKDIR /var/www/html
+# Change directory to the Apache web root
+RUN cd /var/www/html
 
 # Clone the repository and copy its contents to the web server root
-RUN git clone https://github.com/chagak/honey-static-webapp.git /tmp/honey-static-webapp && \
-    cp -r /tmp/honey-static-webapp/* /var/www/html/ && \
-    rm -rf /tmp/honey-static-webapp
+RUN git clone https://github.com/chagak/honey-static-webapp.git /tmp/honey-static-webapp/* \
+    && cp -r /tmp/honey-static-webapp/* /var/www/html/ \
+    && rm -rf /tmp/honey-static-webapp/
 
-# Expose port 80 to allow access to the web server
+# Expose port 80
 EXPOSE 80
 
-# Start Apache in the foreground
+# Set the default application that will start when the container starts
 CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
