@@ -8,6 +8,13 @@ pipeline {
     // }
 
     stages {
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'docker build -t myjenkinsapp .'
+            }
+        }
         stage('Verify Docker') {
             steps {
                 // Ensure Docker is installed and running
@@ -17,18 +24,12 @@ pipeline {
                 '''
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t myjenkinsapp .'
-            }
-        }
         stage('Create ECR and Push Image') {
             agent {
                 docker {
                     image 'amazon/aws-cli'
-                    //args "--entrypoint=''" // Overrides entrypoint for full flexibility
-                    args '--privileged -v /var/run/docker.sock:/var/run/docker.sock  --entrypoint'
+                    args "--entrypoint=''" // Overrides entrypoint for full flexibility
+                    // args '--privileged -v /var/run/docker.sock:/var/run/docker.sock  --entrypoint'
                 }
             }
             environment {
@@ -40,12 +41,6 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
-                        echo "Installing Docker in amazon/aws-cli image..."
-                        yum update -y && yum install -y docker
-
-                        echo "Starting Docker service..."
-                        service docker start || dockerd &
-
                         echo "AWS CLI Version:"
                         aws --version
 
