@@ -25,7 +25,13 @@ pipeline {
             }
         }
         stage('Create ECR and Push Image') {
-            agent any
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''" // Overrides entrypoint for full flexibility
+                    // args '--privileged -v /var/run/docker.sock:/var/run/docker.sock  --entrypoint'
+                }
+            }
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
                 AWS_DEFAULT_REGION = "us-east-1"
