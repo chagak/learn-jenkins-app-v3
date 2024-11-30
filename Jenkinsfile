@@ -18,6 +18,7 @@ pipeline {
             agent {
                 docker {
                     image 'amazon/aws-cli'
+                    image 'docker:latest'
                     args "--entrypoint=''" // "-u root" can be added to be a root
                 }
             }
