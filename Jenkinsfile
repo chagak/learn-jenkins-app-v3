@@ -24,7 +24,6 @@ pipeline {
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
                 AWS_DEFAULT_REGION = "us-east-1"
-                aws_account_id
                 AWS_ACCOUNT_ID = "871909687521"
             }
             steps {
