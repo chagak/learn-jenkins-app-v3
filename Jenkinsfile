@@ -39,6 +39,12 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
+                        echo "Installing Docker in amazon/aws-cli image..."
+                        yum update -y && yum install -y docker
+
+                        echo "Starting Docker service..."
+                        service docker start || dockerd &
+
                         echo "AWS CLI Version:"
                         aws --version
 
