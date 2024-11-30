@@ -14,8 +14,30 @@ pipeline {
                 sh 'docker build -t myjenkinsapp .'
             }
         }
+        stage('Create ECR') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''" // "-u root" can be added to be a root
+                }
+            }
+            environment {
+                AWS_S3_BUCKET = 'chaganote-demo-v4'
+                AWS_DEFAULT_REGION = "us-east-1"
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws --version
+                        aws ecs create-service \
+                            --repository-name jenkinsEcr/sample-repo
 
-        stage('Deploy to AWS') {
+                    '''}
+
+            }
+        }
+
+        /*stage('Deploy to AWS') {
             agent {
                 docker {
                     image 'amazon/aws-cli'
@@ -49,11 +71,10 @@ pipeline {
                             --launch-type FARGATE \
                             --platform-version LATEST \
                             --network-configuration "awsvpcConfiguration={subnets=[\"${AWS_SUBNET_1A_ID}",\"${AWS_SUBNET_1B_ID}"],securityGroups=[\"$ECS_SECURITY_GROUP_ID"],assignPublicIp=\"ENABLED\"}"
-                    '''
-}
+                    '''}
 
             }
-        }
+        } */
 
         /*stage('Build') {
             agent {
