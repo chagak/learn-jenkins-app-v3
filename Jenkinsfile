@@ -8,43 +8,53 @@ pipeline {
     // }
 
     stages {
-        stage('Build Docker Image') {
-            steps {
-                echo 'Hello World'
-                sh 'docker build -t myjenkinsapp .'
-            }
-        }
         stage('Verify Docker') {
             steps {
-                // Check if Docker is installed and running
+                // Ensure Docker is installed and running
                 sh '''
                 which docker || { echo "Docker not found!"; exit 1; }
                 docker --version
                 '''
             }
         }
-        stage('Create ECR') {
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'docker build -t myjenkinsapp .'
+            }
+        }
+        stage('Create ECR and Push Image') {
             agent {
                 docker {
                     image 'amazon/aws-cli'
-                    //image 'docker:latest'//
-                    args "--entrypoint=''" // "-u root" can be added to be a root
+                    args "--entrypoint=''" // Overrides entrypoint for full flexibility
                 }
             }
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
                 AWS_DEFAULT_REGION = "us-east-1"
                 AWS_ACCOUNT_ID = "871909687521"
+                ECR_REPOSITORY = "jenkins-ecr"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
+                        echo "AWS CLI Version:"
                         aws --version
-                        aws ecr create-repository --repository-name jenkins-ecr
+
+                        echo "Creating ECR Repository..."
+                        aws ecr create-repository --repository-name $ECR_REPOSITORY || echo "Repository may already exist."
+
+                        echo "Logging into ECR..."
                         aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
-                    '''}
+                        echo "Tagging Docker Image..."
+                        docker tag myjenkinsapp:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
+                        echo "Pushing Docker Image to ECR..."
+                        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+                    '''
+                }
             }
         }
 
