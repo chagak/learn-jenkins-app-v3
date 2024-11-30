@@ -71,7 +71,7 @@ pipeline {
             }
         }
 
-        /*stage('Deploy to AWS') {
+        stage('Deploy to AWS') {
             agent {
                 docker {
                     image 'amazon/aws-cli'
@@ -108,7 +108,7 @@ pipeline {
                     '''}
 
             }
-        } */
+        }
 
         /*stage('Build') {
             agent {
