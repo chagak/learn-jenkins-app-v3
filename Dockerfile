@@ -1,7 +1,7 @@
 # Use the official Amazon Linux 2 image
 FROM amazonlinux:2
 
-# Install necessary packages including Apache, Git, Docker, and AWS CLI
+# Install necessary packages including Apache, Git, Docker, and AWS CLI dependencies
 RUN yum update -y && \
     yum install -y \
     httpd \
@@ -31,3 +31,4 @@ EXPOSE 80
 
 # Set the default application that will start when the container starts
 CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+
