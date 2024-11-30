@@ -14,15 +14,15 @@ pipeline {
                 docker {
                     image 'amazon/aws-cli'
                     reuseNode true
-                    args "--entrypoint=''" 
+                    args "-u root --entrypoint=''" 
                 }
             }
 
             steps {
                 echo 'Building Docker image...'
-                //sh 'amazon-linux-extras enable docker' 
-                sh 'yum install -y docker'
-                sh 'systemctl start docker'
+                sh 'amazon-linux-extras install docker' 
+                // sh 'yum install -y docker'
+                // sh 'systemctl start docker'
                 sh 'docker build -t myjenkinsapp .'
             }
         }
