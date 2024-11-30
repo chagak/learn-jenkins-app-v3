@@ -29,8 +29,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
-                        aws ecs create-service \
-                            --repository-name jenkinsEcr/sample-repo
+                        aws ecr create-repository --repository-name jenkinsEcr
 
                     '''}
 
