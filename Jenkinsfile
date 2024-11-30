@@ -24,12 +24,15 @@ pipeline {
             environment {
                 AWS_S3_BUCKET = 'chaganote-demo-v4'
                 AWS_DEFAULT_REGION = "us-east-1"
+                aws_account_id
+                AWS_ACCOUNT_ID = "871909687521"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws-user', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
                         aws ecr create-repository --repository-name jenkins-ecr
+                        aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
                     '''}
 
