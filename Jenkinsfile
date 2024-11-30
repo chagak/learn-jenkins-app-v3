@@ -39,8 +39,7 @@ pipeline {
             agent {
                 docker {
                     image 'amazon/aws-cli'
-                    args "--entrypoint=''" // Overrides entrypoint for full flexibility
-                    // args '--privileged -v /var/run/docker.sock:/var/run/docker.sock  --entrypoint'
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
             }
             environment {
