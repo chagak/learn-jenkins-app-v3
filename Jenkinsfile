@@ -54,6 +54,7 @@ pipeline {
                     sh '''
                         echo "AWS CLI Version:"
                         aws --version
+                        amazon-linux-extras install docker 
 
                         echo "Creating ECR Repository..."
                         aws ecr create-repository --repository-name $ECR_REPOSITORY || echo "Repository may already exist."
